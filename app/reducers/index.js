@@ -1,5 +1,5 @@
-import counter from './counter';
+import choose from './choose';
 
 export {
-  counter
+  choose
 };

@@ -25,3 +25,8 @@ export function undoChoice() {
     type: types.UNDO_CHOICE
   };
 }
+export function reStartPlay() {
+  return {
+    type: types.RESTART_PLAY
+  };
+}

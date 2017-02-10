@@ -9,6 +9,8 @@ const initialState = {
   gameStatus: gameStatuses.GAME_IS_PLAYED
 };
 
+
+
 export default function counter(state = initialState, action = {}) {
   let history
 
@@ -26,38 +28,52 @@ export default function counter(state = initialState, action = {}) {
 
     case types.CHOICE_IS_MADE:
           history = state.history //@todo [очень отдалённое][очень потенциальный баг][неожиданное поведение] По идеологии react нужно клонировать массив, а не передвать его по ссылке
-          if ('' === action.answerNumber)
-          history[length-1].answerNumber = action.answerNumber //Дописываем сведения о выборе варианта ответа в последний элемент массива
-          currentChoiceId = choices[history[length-1].choiceId]
-          choiceId = choices[currentChoiceId].answers[action.answerNumber - 1].choiceId // choiceId, к которому привёл ответ на текущий вопрос
+          history[ history.length - 1 ].answerNumber = action.answerNumber //Дописываем сведения о выборе варианта ответа в последний элемент массива
+          currentChoiceId = history[ history.length - 1 ].choiceId
+          console.log('*************=====================================================')
+          console.log(currentChoiceId)
+          console.log(action.answerNumber)
+          console.log(choices[ currentChoiceId ].answers[ action.answerNumber ].choiceId)
+          console.log(JSON.stringify(history))
+          console.log('*************=====================================================')
+          choiceId = choices[ currentChoiceId ].answers[ action.answerNumber ].choiceId // choiceId, к которому привёл ответ на текущий вопрос
           if ('' === choiceId) { //Если меняется статус игры, то нового вопроса нет
             return {
               ...state,
               history, //Он уже другой, т.к. ответ-то в него всё равно записали уже
-              gameStatus:  choices[currentChoiceId].answers[action.answerNumber - 1].gameStatus,
+              gameStatus:  choices[currentChoiceId].answers[action.answerNumber].gameStatus,
               undid: false // Сбрасываем флаг предыдущией отмены
             };
           }
+          history.push({choiceId}) //Перед записью добавляем сюда choiceId, к которому привёл ответ на текущий вопрос
           return {
                         ...state,
-                        history: history.push({choiceId}), //Перед записью добавляем сюда choiceId, к которому привёл ответ на текущий вопрос
+                        history,
                         undid: false // Сбрасываем флаг предыдущией отмены
           };
 
 
 
     case types.UNDO_CHOICE:
+              console.log('*****')
+              if (1 == state.history.length || state.undid) return state;
               history = state.history //@todo [очень отдалённое][очень потенциальный баг][неожиданное поведение] По идеологии react нужно клонировать массив, а не передвать его по ссылке
               //Нечего отменять или уже отменяли (а дважды подряд отменять нельзя)
-              history.pop()
-              delete history[ history.length - 1 ].answerNumber //Удаляем выбранный ранее вариант ответа
-              if (0 == state.history.length || state.undid) return state;
+              //history.pop() //Удалим текущий вопрос
+              delete history[ history.length - 1 ].answerNumber //Удаляем выбранный ранее вариант ответа напредыдущий вопрос
               return {
                 ...state,
-                history: state.history.pop(),
+                history,
                 gameStatus: gameStatuses.GAME_IS_PLAYED, //Это на случай, если статус был поменян
                 undid: true
               };
+    case types.RESTART_PLAY:
+      return { //@todo [дублирование кода][неожиданное поведение] initialState портится вовремя игры, т.к. массив передаётся по ссылке
+               count: 0,
+               history: [{choiceId:'1'}], //Массив объектов {choiceId, answerNumber} - если answer undefined, то ответ не дан
+               undid: false, //Если true, то ход уже отменяли, а дважды подряд отменять нельзя... Через ход, например, уже снова можно отменить
+               gameStatus: gameStatuses.GAME_IS_PLAYED
+             };
 
     default:
       return state;
