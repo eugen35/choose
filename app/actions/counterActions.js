@@ -11,3 +11,17 @@ export function decrement() {
     type: types.DECREMENT
   };
 }
+
+
+
+export function choiceIsMade(answerNumber) {
+  return {
+    type: types.CHOICE_IS_MADE,
+    answerNumber
+  };
+}
+export function undoChoice() {
+  return {
+    type: types.UNDO_CHOICE
+  };
+}
