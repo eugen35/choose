@@ -1,7 +1,18 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableHighlight } from 'react-native';
+import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
 
 import * as gameStatuses from '../constants/statuses';
+
+const styles = StyleSheet.create({
+  button: {
+    height: 40,
+    padding: 10,
+    backgroundColor: 'lightgray',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 3
+  }
+});
 
 export default class Choose extends Component {
 
@@ -16,10 +27,10 @@ export default class Choose extends Component {
         return (
           <View>
             <Text>GAME OVER!!!</Text>
-            <TouchableHighlight onPress={ undoChoice }>
+            <TouchableHighlight onPress={ undoChoice } style={styles.button}>
               <Text>ОТМЕНИТЬ ПОСЛЕДНИЙ ВЫБОР</Text>
             </TouchableHighlight>
-            <TouchableHighlight onPress={ reStartPlay }>
+            <TouchableHighlight onPress={ reStartPlay } style={styles.button}>
               <Text>Играть сначала</Text>
             </TouchableHighlight>
           </View>
@@ -29,14 +40,14 @@ export default class Choose extends Component {
         return (
           <View>
             <Text>YOU ARE WON!!!</Text>
-            <TouchableHighlight onPress={ reStartPlay }>
+            <TouchableHighlight onPress={ reStartPlay } style={styles.button}>
                 <Text>Играть сначала</Text>
             </TouchableHighlight>
           </View>
         );
       default:
         const answersItems = this.props.answers.map( (answer, index) =>
-                              <TouchableHighlight key = {index} onPress={ () => choiceIsMade (index) }>
+                              <TouchableHighlight key = {index} onPress={ () => choiceIsMade (index) } style={styles.button}>
                                   <Text>{answer.text}</Text>
                               </TouchableHighlight>
                          )
