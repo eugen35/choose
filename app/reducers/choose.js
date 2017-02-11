@@ -1,6 +1,10 @@
 import * as types from '../actions/actionTypes';
 import * as gameStatuses from '../constants/statuses';
 import { choices } from '../data/choices';
+import { NavigationExperimental } from 'react-native';
+const {
+  StateUtils: NavigationStateUtils,
+} = NavigationExperimental;
 
 const initialState = {
   count: 0,
@@ -9,9 +13,9 @@ const initialState = {
   gameStatus: gameStatuses.GAME_IS_PLAYED,
 
   navigationState: {
-          index: 0, // Starts with first route focused.
-          routes: [{key: 'My Initial Scene'}], // Starts with only one route.
-        }
+            index: 0, // Starts with first route focused.
+            routes: [{key: '1'}], // Starts with only one route.
+          }
 
 };
 
@@ -19,6 +23,11 @@ const initialState = {
 
 export default function counter(state = initialState, action = {}) {
   let history
+  let { navigationState } = state
+
+  console.log('===========================')
+  console.log(action.type)
+  console.log('===========================')
 
   switch (action.type) {
     case types.INCREMENT:
@@ -31,6 +40,21 @@ export default function counter(state = initialState, action = {}) {
         ...state,
         count: state.count - 1
       };
+
+    case types.NAV_PUSH:
+                // Push a new route, which in our case is an object with a key value.
+                // I am fond of cryptic keys (but seriously, keys should be unique)
+                const route = {key: '2'};
+
+                // Use the push reducer provided by NavigationStateUtils
+                navigationState = NavigationStateUtils.push(navigationState, route);
+                return {...state, navigationState} //@todo [ненужная нагрузка] Тут можно проверку добавить - менялся ли стэйт, если нет, то новый стэйт делать не нужно - так в официальном примере написано
+
+    case types.NAV_POP:
+      // Pop the current route using the pop reducer.
+      navigationState = NavigationStateUtils.pop(navigationState);
+      return {...state, navigationState} //@todo [ненужная нагрузка] Тут можно проверку добавить - менялся ли стэйт, если нет, то новый стэйт делать не нужно - так в официальном примере написано
+
 
     case types.CHOICE_IS_MADE:
           history = state.history //@todo [очень отдалённое][очень потенциальный баг][неожиданное поведение] По идеологии react нужно клонировать массив, а не передвать его по ссылке

@@ -9,8 +9,7 @@ import Scene1 from './Scene1'
 import Scene2 from './Scene2'
 
 const {
-  CardStack: NavigationCardStack,
-  StateUtils: NavigationStateUtils,
+  CardStack: NavigationCardStack
 } = NavigationExperimental;
 
 
@@ -21,8 +20,12 @@ export default class MyVerySimpleNavigator extends Component {
   constructor(props, context) {
     super(props, context);
 
+/*
     this._onPushRoute = this.props.onNavigationChange.bind(null, 'push');
     this._onPopRoute = this.props.onNavigationChange.bind(null, 'pop');
+*/
+    this._onPushRoute = this.props.onPushRoute.bind(null, 'push');
+    this._onPopRoute = this.props.onPopRoute.bind(null, 'pop');
 
     this._renderScene = this._renderScene.bind(this);
   }
@@ -30,10 +33,12 @@ export default class MyVerySimpleNavigator extends Component {
   // Now we finally get to use the `NavigationCardStack` to render the scenes.
   render() {
     const styles = this.props.styles
+    const navigationState = this.props.navigationState
+    let {onPushRoute, onPopRoute} = this.props
     return (
       <NavigationCardStack
-        onNavigateBack={this._onPopRoute}
-        navigationState={this.props.navigationState}
+        onNavigateBack={this.onPopRoute}
+        navigationState={navigationState}
         renderScene={this._renderScene}
         style={styles.navigator}
       />

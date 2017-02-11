@@ -25,7 +25,7 @@ class CounterApp extends Component {
     console.log(JSON.stringify(state))
     console.log('=====================================================')
     const { question, answers } =  choices[ state.history[ state.history.length - 1 ].choiceId ] //{ question:'ВОПРОС'+JSON.stringify(state.history), answers:['ОТВЕТ1','ОТВЕТ2'] }
-    return (<SceneSwitcher/>)
+    return (<SceneSwitcher state = {state} {...actions}/>)
     /*return (
       <Choose
         question = {question}

@@ -30,3 +30,14 @@ export function reStartPlay() {
     type: types.RESTART_PLAY
   };
 }
+
+
+export function onPushRoute() {
+  return {
+    type: types.NAV_PUSH
+  };
+}export function onPopRoute() {
+  return {
+    type: types.NAV_POP
+  };
+}
