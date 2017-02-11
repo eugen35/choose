@@ -7,3 +7,4 @@ export const RESTART_PLAY = 'RESTART_PLAY';
 
 export const NAV_PUSH = 'NAV_PUSH';
 export const NAV_POP = 'NAV_POP';
+export const NAV_PRESS = 'NAV_PRESS';

@@ -36,8 +36,14 @@ export function onPushRoute() {
   return {
     type: types.NAV_PUSH
   };
-}export function onPopRoute() {
+}
+export function onPopRoute() {
   return {
     type: types.NAV_POP
+  };
+}
+export function onPressRoute() {
+  return {
+    type: types.NAV_PRESS
   };
 }

@@ -22,6 +22,7 @@ export default class MyVerySimpleNavigator extends Component {
 
     this._onPushRoute = this.props.onPushRoute.bind(null, 'push');
     this._onPopRoute = this.props.onPopRoute.bind(null, 'pop');
+    this._onPressRoute = this.props.onPressRoute.bind(null, 'press');
 
     this._renderScene = this._renderScene.bind(this);
   }
@@ -98,6 +99,7 @@ export default class MyVerySimpleNavigator extends Component {
                 route={sceneProps.scene.route}
                 onPushRoute={this._onPushRoute}
                 onPopRoute={this._onPopRoute}
+                onPressRoute={this._onPressRoute}
                 onExit={this.props.onExit}
               />)
     }
@@ -107,6 +109,7 @@ export default class MyVerySimpleNavigator extends Component {
         route={sceneProps.scene.route}
         onPushRoute={this._onPushRoute}
         onPopRoute={this._onPopRoute}
+        onPressRoute={this._onPressRoute}
         onExit={this.props.onExit}
       />
     );

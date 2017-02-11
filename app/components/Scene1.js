@@ -1,5 +1,5 @@
 import {
-  NavigationExperimental, PixelRatio, ScrollView, StyleSheet, Text, TouchableHighlight
+  NavigationExperimental, PixelRatio, ScrollView, StyleSheet, Text, TouchableHighlight, View
 } from 'react-native';
 
 import React, { Component } from 'react';
@@ -47,6 +47,9 @@ export default class Scene1 extends Component {
     const styles = this.props.styles
     return (
       <ScrollView style={styles.scrollView}>
+        <TouchableHighlight onPress={this.props.onPressRoute}>
+            <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+        </TouchableHighlight>
         <Text style={styles.row}>
           СЦЕНА 1
           Route: {this.props.route.key}

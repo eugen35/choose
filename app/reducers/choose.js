@@ -42,19 +42,32 @@ export default function counter(state = initialState, action = {}) {
       };
 
     case types.NAV_PUSH:
-                // Push a new route, which in our case is an object with a key value.
-                // I am fond of cryptic keys (but seriously, keys should be unique)
-                const route = {key: '2'};
-
-                // Use the push reducer provided by NavigationStateUtils
-                navigationState = NavigationStateUtils.push(navigationState, route);
-                return {...state, navigationState} //@todo [ненужная нагрузка] Тут можно проверку добавить - менялся ли стэйт, если нет, то новый стэйт делать не нужно - так в официальном примере написано
+        // Push a new route, which in our case is an object with a key value.
+        // I am fond of cryptic keys (but seriously, keys should be unique)
+        const route = {key: '2'};
+        // Use the push reducer provided by NavigationStateUtils
+        navigationState = NavigationStateUtils.push(navigationState, route);
+        return {...state, navigationState} //@todo [ненужная нагрузка] Тут можно проверку добавить - менялся ли стэйт, если нет, то новый стэйт делать не нужно - так в официальном примере написано
 
     case types.NAV_POP:
       // Pop the current route using the pop reducer.
       navigationState = NavigationStateUtils.pop(navigationState);
       return {...state, navigationState} //@todo [ненужная нагрузка] Тут можно проверку добавить - менялся ли стэйт, если нет, то новый стэйт делать не нужно - так в официальном примере написано
 
+    case types.NAV_PRESS:
+      console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||')
+      // Pop the current route using the pop reducer.
+      if ( 1 == navigationState.routes.length ) {
+        // Push a new route, which in our case is an object with a key value.
+        // I am fond of cryptic keys (but seriously, keys should be unique)
+        const route = {key: '2'};
+        // Use the push reducer provided by NavigationStateUtils
+        navigationState = NavigationStateUtils.push(navigationState, route);
+      } else {
+        // Pop the current route using the pop reducer.
+        navigationState = NavigationStateUtils.pop(navigationState);
+      }
+      return {...state, navigationState} //@todo [ненужная нагрузка] Тут можно проверку добавить - менялся ли стэйт, если нет, то новый стэйт делать не нужно - так в официальном примере написано
 
     case types.CHOICE_IS_MADE:
           history = state.history //@todo [очень отдалённое][очень потенциальный баг][неожиданное поведение] По идеологии react нужно клонировать массив, а не передвать его по ссылке
