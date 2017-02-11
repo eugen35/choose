@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import Counter from '../components/counter';
 import Choose from '../components/Choose';
+import SceneSwitcher from '../components/SceneSwitcher';
 import * as counterActions from '../actions/counterActions';
 import { connect } from 'react-redux';
 
@@ -13,6 +14,7 @@ import { choices } from '../data/choices.js'
 //   state: state.counter
 // }))
 class CounterApp extends Component {
+
   constructor(props) {
     super(props);
   }
@@ -23,15 +25,17 @@ class CounterApp extends Component {
     console.log(JSON.stringify(state))
     console.log('=====================================================')
     const { question, answers } =  choices[ state.history[ state.history.length - 1 ].choiceId ] //{ question:'ВОПРОС'+JSON.stringify(state.history), answers:['ОТВЕТ1','ОТВЕТ2'] }
-    return (
+    return (<SceneSwitcher/>)
+    /*return (
       <Choose
         question = {question}
         answers = {answers}
         gameStatus = {state.gameStatus}
         undid = {state.undid}
         {...actions} />
-    );
+    );*/
   }
+
 }
 
 export default connect(state => ({

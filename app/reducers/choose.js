@@ -6,7 +6,13 @@ const initialState = {
   count: 0,
   history: [{choiceId:'1'}], //Массив объектов {choiceId, answerNumber} - если answer undefined, то ответ не дан
   undid: false, //Если true, то ход уже отменяли, а дважды подряд отменять нельзя... Через ход, например, уже снова можно отменить
-  gameStatus: gameStatuses.GAME_IS_PLAYED
+  gameStatus: gameStatuses.GAME_IS_PLAYED,
+
+  navigationState: {
+          index: 0, // Starts with first route focused.
+          routes: [{key: 'My Initial Scene'}], // Starts with only one route.
+        }
+
 };
 
 
