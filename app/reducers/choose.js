@@ -30,17 +30,6 @@ export default function counter(state = initialState, action = {}) {
   console.log('===========================')
 
   switch (action.type) {
-    case types.INCREMENT:
-      return {
-        ...state,
-        count: state.count + 1
-      };
-    case types.DECREMENT:
-      return {
-        ...state,
-        count: state.count - 1
-      };
-
     case types.NAV_PUSH:
         // Push a new route, which in our case is an object with a key value.
         // I am fond of cryptic keys (but seriously, keys should be unique)

@@ -2,7 +2,6 @@
 
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
-import Counter from '../components/counter';
 import Choose from '../components/Choose';
 import MyVerySimpleNavigator from '../components/MyVerySimpleNavigator';
 import * as counterActions from '../actions/counterActions';
@@ -10,9 +9,7 @@ import { connect } from 'react-redux';
 
 import { choices } from '../data/choices.js'
 
-// @connect(state => ({
-//   state: state.counter
-// }))
+
 class CounterApp extends Component {
 
   constructor(props) {
@@ -33,14 +30,6 @@ class CounterApp extends Component {
             undid = {state.undid}
         />
     );
-    /*return (
-      <Choose
-        question = {question}
-        answers = {answers}
-        gameStatus = {state.gameStatus}
-        undid = {state.undid}
-        {...actions} />
-    );*/
   }
 
 }

@@ -1,19 +1,5 @@
 import * as types from './actionTypes';
 
-export function increment() {
-  return {
-    type: types.INCREMENT
-  };
-}
-
-export function decrement() {
-  return {
-    type: types.DECREMENT
-  };
-}
-
-
-
 export function choiceIsMade(answerNumber) {
   return {
     type: types.CHOICE_IS_MADE,
@@ -32,16 +18,6 @@ export function reStartPlay() {
 }
 
 
-export function onPushRoute() {
-  return {
-    type: types.NAV_PUSH
-  };
-}
-export function onPopRoute() {
-  return {
-    type: types.NAV_POP
-  };
-}
 export function onPressRoute() {
   return {
     type: types.NAV_PRESS
