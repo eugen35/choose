@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, TouchableHighlight} from 'react-native';
 
 const styles = StyleSheet.create({
   button: {
@@ -22,8 +22,10 @@ export default class LeftSideBar extends Component {
     const { reStartPlay, resumeGame } = this.props;
 
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>МЕНЮ</Text>
+      <View >
+        <TouchableHighlight onPress={this.props.onPressRoute}>
+                                        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+                                    </TouchableHighlight>
         <TouchableOpacity onPress={reStartPlay} style={styles.button}>
           <Text>Continue</Text>
         </TouchableOpacity>

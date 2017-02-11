@@ -5,7 +5,7 @@ import {
 import React, { Component } from 'react';
 
 
-import Scene1 from './Scene1'
+import LeftSideBar from './LeftSideBar'
 import Choose from './Choose'
 
 const {
@@ -94,13 +94,9 @@ export default class MyVerySimpleNavigator extends Component {
     console.log('1'==sceneProps.scene.route.key)
     console.log('-------------------')
     if ('1'==sceneProps.scene.route.key) {
-        return (<Scene1
-                styles={styles}
-                route={sceneProps.scene.route}
-                onPushRoute={this._onPushRoute}
-                onPopRoute={this._onPopRoute}
+        return (<LeftSideBar
                 onPressRoute={this._onPressRoute}
-                onExit={this.props.onExit}
+                propsAll={this.props}
               />)
     }
     return (
