@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import Counter from '../components/counter';
-import Choose from '../components/choose';
+import Choose from '../components/Choose';
 import * as counterActions from '../actions/counterActions';
 import { connect } from 'react-redux';
 
