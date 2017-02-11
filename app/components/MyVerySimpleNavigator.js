@@ -20,10 +20,6 @@ export default class MyVerySimpleNavigator extends Component {
   constructor(props, context) {
     super(props, context);
 
-/*
-    this._onPushRoute = this.props.onNavigationChange.bind(null, 'push');
-    this._onPopRoute = this.props.onNavigationChange.bind(null, 'pop');
-*/
     this._onPushRoute = this.props.onPushRoute.bind(null, 'push');
     this._onPopRoute = this.props.onPopRoute.bind(null, 'pop');
 
@@ -32,8 +28,28 @@ export default class MyVerySimpleNavigator extends Component {
 
   // Now we finally get to use the `NavigationCardStack` to render the scenes.
   render() {
-    const styles = this.props.styles
-    const navigationState = this.props.navigationState
+    const styles = StyleSheet.create({
+      navigator: {
+        flex: 1,
+      },
+      scrollView: {
+        marginTop: 64
+      },
+      row: {
+        padding: 15,
+        backgroundColor: 'white',
+        borderBottomWidth: 1 / PixelRatio.get(),
+        borderBottomColor: '#CDCDCD',
+      },
+      rowText: {
+        fontSize: 17,
+      },
+      buttonText: {
+        fontSize: 17,
+        fontWeight: '500',
+      },
+    });
+    const navigationState = this.props.state.navigationState
     let {onPushRoute, onPopRoute} = this.props
     return (
       <NavigationCardStack

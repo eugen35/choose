@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import Counter from '../components/counter';
 import Choose from '../components/Choose';
-import SceneSwitcher from '../components/SceneSwitcher';
+import MyVerySimpleNavigator from '../components/MyVerySimpleNavigator';
 import * as counterActions from '../actions/counterActions';
 import { connect } from 'react-redux';
 
@@ -25,7 +25,7 @@ class CounterApp extends Component {
     console.log(JSON.stringify(state))
     console.log('=====================================================')
     const { question, answers } =  choices[ state.history[ state.history.length - 1 ].choiceId ] //{ question:'ВОПРОС'+JSON.stringify(state.history), answers:['ОТВЕТ1','ОТВЕТ2'] }
-    return (<SceneSwitcher state = {state} {...actions}/>)
+    return (<MyVerySimpleNavigator state = {state} {...actions}/>)
     /*return (
       <Choose
         question = {question}
