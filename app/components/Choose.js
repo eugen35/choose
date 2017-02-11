@@ -21,11 +21,14 @@ export default class Choose extends Component {
   }
 
   render() {
-    const { question, answers, gameStatus, undid, answerNumber, choiceIsMade, undoChoice, reStartPlay } = this.props;
+    const { question, answers, gameStatus, undid, answerNumber, choiceIsMade, undoChoice, reStartPlay } = this.props.propsAll;
     switch (gameStatus){
       case gameStatuses.GAME_OVER:
         return (
           <View>
+            <TouchableHighlight onPress={this.props.onPressRoute}>
+                        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+                    </TouchableHighlight>
             <Text>GAME OVER!!!</Text>
             <TouchableHighlight onPress={ undoChoice } style={styles.button}>
               <Text>ОТМЕНИТЬ ПОСЛЕДНИЙ ВЫБОР</Text>
@@ -39,6 +42,9 @@ export default class Choose extends Component {
       case gameStatuses.GAME_IS_WON:
         return (
           <View>
+            <TouchableHighlight onPress={this.props.onPressRoute}>
+                        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+                    </TouchableHighlight>
             <Text>YOU ARE WON!!!</Text>
             <TouchableHighlight onPress={ reStartPlay } style={styles.button}>
                 <Text>Играть сначала</Text>
@@ -46,13 +52,16 @@ export default class Choose extends Component {
           </View>
         );
       default:
-        const answersItems = this.props.answers.map( (answer, index) =>
+        const answersItems = answers.map( (answer, index) =>
                               <TouchableHighlight key = {index} onPress={ () => choiceIsMade (index) } style={styles.button}>
                                   <Text>{answer.text}</Text>
                               </TouchableHighlight>
                          )
         return (
                 <View>
+                    <TouchableHighlight onPress={this.props.onPressRoute}>
+                                <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+                            </TouchableHighlight>
                     <Text>{this.props.question}</Text>
                     { answerNumber != undefined ? <Text>{answers[answerNumber].text}</Text> : answersItems }
                 </View>

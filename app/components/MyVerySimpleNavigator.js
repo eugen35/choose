@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 
 
 import Scene1 from './Scene1'
-import Scene2 from './Scene2'
+import Choose from './Choose'
 
 const {
   CardStack: NavigationCardStack
@@ -104,13 +104,9 @@ export default class MyVerySimpleNavigator extends Component {
               />)
     }
     return (
-      <Scene2
-        styles={styles}
-        route={sceneProps.scene.route}
-        onPushRoute={this._onPushRoute}
-        onPopRoute={this._onPopRoute}
+      <Choose
         onPressRoute={this._onPressRoute}
-        onExit={this.props.onExit}
+        propsAll={this.props}
       />
     );
   }
