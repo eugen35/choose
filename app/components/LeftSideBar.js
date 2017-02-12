@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, TouchableHighlight} from 'react-native';
+import {StyleSheet, View, Text, TouchableHighlight} from 'react-native';
 
 const styles = StyleSheet.create({
   button: {
@@ -19,22 +19,19 @@ export default class LeftSideBar extends Component {
   }
 
   render() {
-    const { reStartPlay, resumeGame } = this.props;
+    const { restartGame, resumeGame } = this.props.propsAll;
 
     return (
       <View >
         <TouchableHighlight onPress={this.props.onPressRoute}>
-                                        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
-                                    </TouchableHighlight>
-        <TouchableOpacity onPress={reStartPlay} style={styles.button}>
+            <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={resumeGame} style={styles.button}>
           <Text>Continue</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={resumeGame} style={styles.button}>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={restartGame} style={styles.button}>
           <Text>New game</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={reStartPlay} style={styles.button}>
-          <Text>Exit</Text>
-        </TouchableOpacity>
+        </TouchableHighlight>
       </View>
     );
   }

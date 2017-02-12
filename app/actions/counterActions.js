@@ -11,9 +11,14 @@ export function undoChoice() {
     type: types.UNDO_CHOICE
   };
 }
-export function reStartPlay() {
+export function restartGame() {
   return {
-    type: types.RESTART_PLAY
+    type: types.RESTART_GAME
+  };
+}
+export function resumeGame() {
+  return {
+    type: types.RESUME_GAME
   };
 }
 

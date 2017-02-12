@@ -30,21 +30,9 @@ export default function counter(state = initialState, action = {}) {
   console.log('===========================')
 
   switch (action.type) {
-    case types.NAV_PUSH:
-        // Push a new route, which in our case is an object with a key value.
-        // I am fond of cryptic keys (but seriously, keys should be unique)
-        const route = {key: '2'};
-        // Use the push reducer provided by NavigationStateUtils
-        navigationState = NavigationStateUtils.push(navigationState, route);
-        return {...state, navigationState} //@todo [ненужная нагрузка] Тут можно проверку добавить - менялся ли стэйт, если нет, то новый стэйт делать не нужно - так в официальном примере написано
-
-    case types.NAV_POP:
-      // Pop the current route using the pop reducer.
-      navigationState = NavigationStateUtils.pop(navigationState);
-      return {...state, navigationState} //@todo [ненужная нагрузка] Тут можно проверку добавить - менялся ли стэйт, если нет, то новый стэйт делать не нужно - так в официальном примере написано
 
     case types.NAV_PRESS:
-      console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||')
+
       // Pop the current route using the pop reducer.
       if ( 1 == navigationState.routes.length ) {
         // Push a new route, which in our case is an object with a key value.
@@ -99,15 +87,38 @@ export default function counter(state = initialState, action = {}) {
                 gameStatus: gameStatuses.GAME_IS_PLAYED, //Это на случай, если статус был поменян
                 undid: true
               };
-    case types.RESTART_PLAY:
+
+    case types.RESTART_GAME:
+      console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||')
       return { //@todo [дублирование кода][неожиданное поведение] initialState портится вовремя игры, т.к. массив передаётся по ссылке
                count: 0,
                history: [{choiceId:'1'}], //Массив объектов {choiceId, answerNumber} - если answer undefined, то ответ не дан
                undid: false, //Если true, то ход уже отменяли, а дважды подряд отменять нельзя... Через ход, например, уже снова можно отменить
-               gameStatus: gameStatuses.GAME_IS_PLAYED
+               gameStatus: gameStatuses.GAME_IS_PLAYED,
+                navigationState: {
+                           index: 1, // Starts with two route focused.
+                           routes: [{key: '1'}, {key: '2'}], // Starts with only one route.
+                         }
+             };
+
+
+    case types.RESUME_GAME:
+      console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||')
+      //@todo [правильность использования библиотеки] [очень отдалённо] а ведь в течение работы app этот роут у нас есть. зачем его снова создавать? или нет его? ведь мы попим его когда уходим с него? а зачем мы попим его?
+      navigationState = NavigationStateUtils.push(navigationState, {key: '2'});
+      return { //@todo [дублирование кода][неожиданное поведение] initialState портится вовремя игры, т.к. массив передаётся по ссылке
+               count: 0,
+               history: [{choiceId:'1'}], //Массив объектов {choiceId, answerNumber} - если answer undefined, то ответ не дан
+               undid: false, //Если true, то ход уже отменяли, а дважды подряд отменять нельзя... Через ход, например, уже снова можно отменить
+               gameStatus: gameStatuses.GAME_IS_PLAYED,
+                navigationState: {
+                           index: 0, // Starts with first route focused.
+                           routes: [{key: '1'}], // Starts with only one route.
+                         }
              };
 
     default:
       return state;
   }
 }
+

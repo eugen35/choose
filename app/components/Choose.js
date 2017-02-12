@@ -21,7 +21,7 @@ export default class Choose extends Component {
   }
 
   render() {
-    const { question, answers, gameStatus, undid, answerNumber, choiceIsMade, undoChoice, reStartPlay } = this.props.propsAll;
+    const { question, answers, gameStatus, undid, answerNumber, choiceIsMade, undoChoice, restartGame } = this.props.propsAll;
     switch (gameStatus){
       case gameStatuses.GAME_OVER:
         return (
@@ -33,7 +33,7 @@ export default class Choose extends Component {
             <TouchableHighlight onPress={ undoChoice } style={styles.button}>
               <Text>ОТМЕНИТЬ ПОСЛЕДНИЙ ВЫБОР</Text>
             </TouchableHighlight>
-            <TouchableHighlight onPress={ reStartPlay } style={styles.button}>
+            <TouchableHighlight onPress={ restartGame } style={styles.button}>
               <Text>Играть сначала</Text>
             </TouchableHighlight>
           </View>
@@ -46,7 +46,7 @@ export default class Choose extends Component {
                         <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
                     </TouchableHighlight>
             <Text>YOU ARE WON!!!</Text>
-            <TouchableHighlight onPress={ reStartPlay } style={styles.button}>
+            <TouchableHighlight onPress={ restartGame } style={styles.button}>
                 <Text>Играть сначала</Text>
             </TouchableHighlight>
           </View>
