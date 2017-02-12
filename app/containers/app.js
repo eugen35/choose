@@ -17,7 +17,7 @@ const reducer = combineReducers(reducers);
 const store = createStore(reducer, undefined, autoRehydrate(), applyMiddleware(thunk)); // Add the autoRehydrate middleware to your redux store
 
 // Enable persistence and choice AsyncStorage
-persistStore(store, {storage: AsyncStorage})
+//persistStore(store, {storage: AsyncStorage})
 
 export default class App extends Component {
   render() {

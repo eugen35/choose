@@ -6,22 +6,21 @@ const {
   StateUtils: NavigationStateUtils,
 } = NavigationExperimental;
 
-const initialState = {
-  count: 0,
-  history: [{choiceId:'1'}], //Массив объектов {choiceId, answerNumber} - если answer undefined, то ответ не дан
-  undid: false, //Если true, то ход уже отменяли, а дважды подряд отменять нельзя... Через ход, например, уже снова можно отменить
-  gameStatus: gameStatuses.GAME_IS_PLAYED,
+//Создаём функцию для того, чтобы генерировать начальное состояние. Чтобы работал редьюсер restartGame
+//Если бы мы начальное состояние хранили в переменной, то по ходу приложения оно бы менялось, так как массивы и прочее передаются по ссылке
+const getInitialState = () => ({
+   count: 0,
+   history: [{choiceId:'1'}], //Массив объектов {choiceId, answerNumber} - если answer undefined, то ответ не дан
+   undid: false, //Если true, то ход уже отменяли, а дважды подряд отменять нельзя... Через ход, например, уже снова можно отменить
+   gameStatus: gameStatuses.GAME_IS_PLAYED,
+   navigationState: {
+       index: 0, // Starts with first route focused.
+       routes: [{key: '1'}] // Starts with only one route.
+   }
+});
+let restartedGameState;
 
-  navigationState: {
-            index: 0, // Starts with first route focused.
-            routes: [{key: '1'}], // Starts with only one route.
-          }
-
-};
-
-
-
-export default function counter(state = initialState, action = {}) {
+export default function counter(state = getInitialState(), action = {}) {
   let history
   let { navigationState } = state
 
@@ -90,16 +89,12 @@ export default function counter(state = initialState, action = {}) {
 
     case types.RESTART_GAME:
       console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||')
-      return { //@todo [дублирование кода][неожиданное поведение] initialState портится вовремя игры, т.к. массив передаётся по ссылке
-               count: 0,
-               history: [{choiceId:'1'}], //Массив объектов {choiceId, answerNumber} - если answer undefined, то ответ не дан
-               undid: false, //Если true, то ход уже отменяли, а дважды подряд отменять нельзя... Через ход, например, уже снова можно отменить
-               gameStatus: gameStatuses.GAME_IS_PLAYED,
-                navigationState: {
-                           index: 1, // Starts with two route focused.
-                           routes: [{key: '1'}, {key: '2'}], // Starts with only one route.
-                         }
-             };
+      restartedGameState = getInitialState();
+      restartedGameState.navigationState = {
+         index: 1, // Starts with two route focused.
+         routes: [{key: '1'}, {key: '2'}] // Starts with only one route.
+      }
+      return restartedGameState;
 
 
     case types.RESUME_GAME:
@@ -112,9 +107,9 @@ export default function counter(state = initialState, action = {}) {
                undid: false, //Если true, то ход уже отменяли, а дважды подряд отменять нельзя... Через ход, например, уже снова можно отменить
                gameStatus: gameStatuses.GAME_IS_PLAYED,
                 navigationState: {
-                           index: 0, // Starts with first route focused.
-                           routes: [{key: '1'}], // Starts with only one route.
-                         }
+                 index: 0, // Starts with first route focused.
+                 routes: [{key: '1'}], // Starts with only one route.
+               }
              };
 
     default:
