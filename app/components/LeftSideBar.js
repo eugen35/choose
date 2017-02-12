@@ -19,17 +19,18 @@ export default class LeftSideBar extends Component {
   }
 
   render() {
-    const { restartGame, resumeGame } = this.props.propsAll;
+    const { restartGame, resumeGame, isContinuePossible } = this.props.propsAll;
 
     return (
       <View >
         <TouchableHighlight onPress={this.props.onPressRoute}>
             <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
         </TouchableHighlight>
+        { isContinuePossible && <TouchableHighlight onPress={resumeGame} style={styles.button}>
+             <Text>Continue</Text>
+           </TouchableHighlight>
+        }
 
-        <TouchableHighlight onPress={resumeGame} style={styles.button}>
-          <Text>Continue</Text>
-        </TouchableHighlight>
 
         <TouchableHighlight onPress={restartGame} style={styles.button}>
           <Text>New game</Text>

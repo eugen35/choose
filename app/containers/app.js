@@ -14,11 +14,14 @@ const reducer = combineReducers(reducers);
 
 //const store = createStore(reducer, undefined, compose(applyMiddleware(thunk), autoRehydrate()));
 //вроде правильно, как ниже, а не как выше: см. раздел tips http://redux.js.org/docs/api/applyMiddleware.html
-const store = createStore(reducer, undefined, autoRehydrate(), applyMiddleware(thunk)); // Add the autoRehydrate middleware to your redux store
+//const store = createStore(reducer, undefined, autoRehydrate(), applyMiddleware(thunk)); // Add the autoRehydrate middleware to your redux store
+const store = createStore(reducer, undefined, applyMiddleware(thunk)); // Add the autoRehydrate middleware to your redux store
 //const store = createStore(reducer, undefined, applyMiddleware(thunk)); // Add the autoRehydrate middleware to your redux store
 
 // Enable persistence and choice AsyncStorage
-persistStore(store, {storage: AsyncStorage})
+persistStore(store, {storage: AsyncStorage}, () => {
+  console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++rehydration complete')
+})
 
 export default class App extends Component {
   render() {

@@ -7,6 +7,7 @@ import MyVerySimpleNavigator from '../components/MyVerySimpleNavigator';
 import * as counterActions from '../actions/counterActions';
 import { connect } from 'react-redux';
 
+import * as gameStatuses from '../constants/statuses';
 import { choices } from '../data/choices.js'
 
 
@@ -28,6 +29,7 @@ class CounterApp extends Component {
             answers = {answers}
             gameStatus = {state.gameStatus}
             undid = {state.undid}
+            isContinuePossible = { ( undefined == state.rehydratedState && gameStatuses.GAME_IS_NOT_STARTED == state.gameStatus ) ? false : true }
         />
     );
   }

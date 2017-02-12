@@ -14,13 +14,27 @@ const getInitialState = () => ({
    count: 0,
    history: [{choiceId:'1'}], //Массив объектов {choiceId, answerNumber} - если answer undefined, то ответ не дан
    undid: false, //Если true, то ход уже отменяли, а дважды подряд отменять нельзя... Через ход, например, уже снова можно отменить
-   gameStatus: gameStatuses.GAME_IS_PLAYED,
+   gameStatus: gameStatuses.GAME_IS_NOT_STARTED,
    navigationState: {
        index: 0, // Starts with first route focused.
        routes: [{key: '1'}] // Starts with only one route.
    },
    rehydratedState: undefined
 });
+
+//Поскольку пока сравнения объектов даже в ES7 нет, то у нас два варианта:
+//1) Или использовать lodash.isEqual
+//@todo[полноценное использование пакета][очень отдалённое][возможны баги если забудем про эту функцию] 2) Или делать так, чтобы инитиалСтэйт не сохранялся redux-persist-ом... Но тут нужно разбираться
+//Поэтому я написал свою функцию для понимания, что является инитиалСтэйтом.. Но
+function isRehydratedStateEqualToInitialState(rehydratedState){
+  if ( gameStatuses.GAME_IS_NOT_STARTED == rehydratedState.gameStatus ) return true
+  //Если в истории только один вопрос и ответа на него нет и undid == false, то считаем, что сохранённый state равен начальному
+  if ( 1 == rehydratedState.history.length
+    && (! rehydratedState.history[ 0 ].hasOwnProperty('answerNumber')
+    && (! rehydratedState.undid) ) ) return true
+  return false
+}
+
 let restartedGameState;
 
 export default function counter(state = getInitialState(), action = {}) {
@@ -37,7 +51,10 @@ export default function counter(state = getInitialState(), action = {}) {
       //И я могу здесь его отправить в стейт самостоятельно, если захочу
       console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[')
       console.log(JSON.stringify({ ...state, rehydratedState: action.payload.choose }))
+      console.log(JSON.stringify(state))
+      console.log(isRehydratedStateEqualToInitialState(action.payload.choose))
       console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[')
+      if (isRehydratedStateEqualToInitialState(action.payload.choose)) return state //Если в rehydratedState является initialState, то не подгружаем его, чтобы кнопку continue не было видно
       return { ...state, rehydratedState: action.payload.choose }
 
     case types.NAV_PRESS:
@@ -97,7 +114,7 @@ export default function counter(state = getInitialState(), action = {}) {
          index: 1, // Starts with two route focused.
          routes: [{key: '1'}, {key: '2'}] // Starts with only one route.
       }
-      return restartedGameState;
+      return { ... restartedGameState, gameStatus: gameStatuses.GAME_IS_PLAYED }
 
 
     case types.RESUME_GAME:
