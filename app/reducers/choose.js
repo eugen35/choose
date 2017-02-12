@@ -47,8 +47,6 @@ export default function counter(state = getInitialState(), action = {}) {
   switch (action.type) {
 
     case REHYDRATE: //После регидратации возникает это действие, в payload - регидратированное состояние.
-      //Если обрабатываю в редьюсере это действие, то почему-то автоматически в стэйт payload уже не грузитсяю
-      //И я могу здесь его отправить в стейт самостоятельно, если захочу
       console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[')
       console.log(JSON.stringify({ ...state, rehydratedState: action.payload.choose }))
       console.log(JSON.stringify(state))

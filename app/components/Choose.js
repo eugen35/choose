@@ -62,7 +62,7 @@ export default class Choose extends Component {
                     <TouchableHighlight onPress={this.props.onPressRoute}>
                         <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
                     </TouchableHighlight>
-                    <Text>{question}</Text>
+                    <Text style={{ fontSize: 23 }}>{question}</Text>
                     { answerNumber != undefined ? <Text>{answers[answerNumber].text}</Text> : answersItems }
                 </View>
             );
