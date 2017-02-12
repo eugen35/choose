@@ -31,7 +31,6 @@ export default class LeftSideBar extends Component {
            </TouchableHighlight>
         }
 
-
         <TouchableHighlight onPress={restartGame} style={styles.button}>
           <Text>New game</Text>
         </TouchableHighlight>
