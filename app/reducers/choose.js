@@ -2,6 +2,8 @@ import * as types from '../actions/actionTypes';
 import * as gameStatuses from '../constants/statuses';
 import { choices } from '../data/choices';
 import { NavigationExperimental } from 'react-native';
+import {REHYDRATE} from 'redux-persist/constants';
+
 const {
   StateUtils: NavigationStateUtils,
 } = NavigationExperimental;
@@ -16,24 +18,33 @@ const getInitialState = () => ({
    navigationState: {
        index: 0, // Starts with first route focused.
        routes: [{key: '1'}] // Starts with only one route.
-   }
+   },
+   rehydratedState: undefined
 });
 let restartedGameState;
 
 export default function counter(state = getInitialState(), action = {}) {
   let history
   let { navigationState } = state
-
-  console.log('===========================')
-  console.log(action.type)
-  console.log('===========================')
+ console.log('-----------------------------------------------------------------')
+    console.log(action.type)
+    console.log('-----------------------------------------------------------------')
 
   switch (action.type) {
+
+    case REHYDRATE: //После регидратации возникает это действие, в payload - регидратированное состояние.
+      //Если обрабатываю в редьюсере это действие, то почему-то автоматически в стэйт payload уже не грузитсяю
+      //И я могу здесь его отправить в стейт самостоятельно, если захочу
+      console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[')
+      console.log(JSON.stringify({ ...state, rehydratedState: action.payload.choose }))
+      console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[')
+      return { ...state, rehydratedState: action.payload.choose }
 
     case types.NAV_PRESS:
 
       // Pop the current route using the pop reducer.
       if ( 1 == navigationState.routes.length ) {
+        // @todo [правильность использования библиотеки] [очень отдалённо] а ведь в течение работы app этот роут у нас есть. зачем его снова создавать? или нет его? ведь мы попим его когда уходим с него? а зачем мы попим его?
         // Push a new route, which in our case is an object with a key value.
         // I am fond of cryptic keys (but seriously, keys should be unique)
         const route = {key: '2'};
@@ -49,12 +60,6 @@ export default function counter(state = getInitialState(), action = {}) {
           history = state.history //@todo [очень отдалённое][очень потенциальный баг][неожиданное поведение] По идеологии react нужно клонировать массив, а не передвать его по ссылке
           history[ history.length - 1 ].answerNumber = action.answerNumber //Дописываем сведения о выборе варианта ответа в последний элемент массива
           currentChoiceId = history[ history.length - 1 ].choiceId
-          console.log('*************=====================================================')
-          console.log(currentChoiceId)
-          console.log(action.answerNumber)
-          console.log(choices[ currentChoiceId ].answers[ action.answerNumber ].choiceId)
-          console.log(JSON.stringify(history))
-          console.log('*************=====================================================')
           choiceId = choices[ currentChoiceId ].answers[ action.answerNumber ].choiceId // choiceId, к которому привёл ответ на текущий вопрос
           if ('' === choiceId) { //Если меняется статус игры, то нового вопроса нет
             return {
@@ -74,7 +79,6 @@ export default function counter(state = getInitialState(), action = {}) {
 
 
     case types.UNDO_CHOICE:
-              console.log('*****')
               if (1 == state.history.length || state.undid) return state;
               history = state.history //@todo [очень отдалённое][очень потенциальный баг][неожиданное поведение] По идеологии react нужно клонировать массив, а не передвать его по ссылке
               //Нечего отменять или уже отменяли (а дважды подряд отменять нельзя)
@@ -88,8 +92,7 @@ export default function counter(state = getInitialState(), action = {}) {
               };
 
     case types.RESTART_GAME:
-      console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||')
-      restartedGameState = getInitialState();
+      restartedGameState = getInitialState(); //При этом rehydratedState затирается
       restartedGameState.navigationState = {
          index: 1, // Starts with two route focused.
          routes: [{key: '1'}, {key: '2'}] // Starts with only one route.
@@ -99,18 +102,14 @@ export default function counter(state = getInitialState(), action = {}) {
 
     case types.RESUME_GAME:
       console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||')
-      //@todo [правильность использования библиотеки] [очень отдалённо] а ведь в течение работы app этот роут у нас есть. зачем его снова создавать? или нет его? ведь мы попим его когда уходим с него? а зачем мы попим его?
+      console.log(JSON.stringify({... (state.rehydratedState) }))
+      console.log(JSON.stringify({ ...state, navigationState }))
+      console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||')
+      //Если это континуе после регидратации, то подгружаем сохранённый стэйт. При этом данные о регидратация удаляем
+      if (undefined !== state.rehydratedState) return {... (state.rehydratedState), rehydratedState: undefined }
+      //Иначе(так как регидрированных данных нет) - просто переходим обратно к игре
       navigationState = NavigationStateUtils.push(navigationState, {key: '2'});
-      return { //@todo [дублирование кода][неожиданное поведение] initialState портится вовремя игры, т.к. массив передаётся по ссылке
-               count: 0,
-               history: [{choiceId:'1'}], //Массив объектов {choiceId, answerNumber} - если answer undefined, то ответ не дан
-               undid: false, //Если true, то ход уже отменяли, а дважды подряд отменять нельзя... Через ход, например, уже снова можно отменить
-               gameStatus: gameStatuses.GAME_IS_PLAYED,
-                navigationState: {
-                 index: 0, // Starts with first route focused.
-                 routes: [{key: '1'}], // Starts with only one route.
-               }
-             };
+      return { ...state, navigationState };
 
     default:
       return state;

@@ -26,9 +26,11 @@ export default class LeftSideBar extends Component {
         <TouchableHighlight onPress={this.props.onPressRoute}>
             <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
         </TouchableHighlight>
+
         <TouchableHighlight onPress={resumeGame} style={styles.button}>
           <Text>Continue</Text>
         </TouchableHighlight>
+
         <TouchableHighlight onPress={restartGame} style={styles.button}>
           <Text>New game</Text>
         </TouchableHighlight>

@@ -44,10 +44,6 @@ export default class MyVerySimpleNavigator extends Component {
   // Here you could choose to render a different component for each route, but
   // we'll keep it simple.
   _renderScene(sceneProps) {
-    console.log('-------------------')
-    console.log(sceneProps.scene.route.key)
-    console.log('1'==sceneProps.scene.route.key)
-    console.log('-------------------')
     if ('1'==sceneProps.scene.route.key) {
         return (<LeftSideBar
                 onPressRoute={this._onPressRoute}
