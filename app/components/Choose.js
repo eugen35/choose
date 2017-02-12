@@ -60,9 +60,9 @@ export default class Choose extends Component {
         return (
                 <View>
                     <TouchableHighlight onPress={this.props.onPressRoute}>
-                                <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
-                            </TouchableHighlight>
-                    <Text>{this.props.question}</Text>
+                        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+                    </TouchableHighlight>
+                    <Text>{question}</Text>
                     { answerNumber != undefined ? <Text>{answers[answerNumber].text}</Text> : answersItems }
                 </View>
             );
