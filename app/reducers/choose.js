@@ -27,12 +27,18 @@ const getInitialState = () => ({
 //@todo[полноценное использование пакета][очень отдалённое][возможны баги если забудем про эту функцию] 2) Или делать так, чтобы инитиалСтэйт не сохранялся redux-persist-ом... Но тут нужно разбираться
 //Поэтому я написал свою функцию для понимания, что является инитиалСтэйтом.. Но
 function isRehydratedStateEqualToInitialState(rehydratedState){
+  //@todo [bug] [срочно] [возможно устранил] При самом первом запуске приложения, rehydratedState какой-то неправильный, но при этом не undefined... Может null?
+  try {
   if ( gameStatuses.GAME_IS_NOT_STARTED == rehydratedState.gameStatus ) return true
   //Если в истории только один вопрос и ответа на него нет и undid == false, то считаем, что сохранённый state равен начальному
   if ( 1 == rehydratedState.history.length
     && (! rehydratedState.history[ 0 ].hasOwnProperty('answerNumber')
     && (! rehydratedState.undid) ) ) return true
   return false
+  } catch (err) { //Это попытка сделать так, чтобы ошибка, появляющаяся при первом запуске приложения на телефоне, связанная с тем, что rehydratedState при этом не {} и не undefined не выскакивала
+    console.log(err) //@todo [production] [очень отдалённое] В продакшене нам таких выводов в консоль не нужно?
+    return true //Раз функция не смогла выполниться (ошибка), предполагаем, что сохраннённое состояние либо отсутствовало, либо равно initialState
+  }
 }
 
 let restartedGameState;
@@ -48,8 +54,10 @@ export default function counter(state = getInitialState(), action = {}) {
 
     case REHYDRATE: //После регидратации возникает это действие, в payload - регидратированное состояние.
       console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[')
+      console.log(JSON.stringify(action.payload.choose))
       console.log(JSON.stringify({ ...state, rehydratedState: action.payload.choose }))
       console.log(JSON.stringify(state))
+      console.log('-----------------------------------------------------------------')
       console.log(isRehydratedStateEqualToInitialState(action.payload.choose))
       console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[')
       if (isRehydratedStateEqualToInitialState(action.payload.choose)) return state //Если в rehydratedState является initialState, то не подгружаем его, чтобы кнопку continue не было видно
